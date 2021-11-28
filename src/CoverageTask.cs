@@ -15,8 +15,8 @@ namespace Microsoft.Build.Tasks
 public sealed class CoverageTask
     :   Task
     {
-    private const string OPENCOVER_CONSOLE = @"C:\Tools\OpenCover.4.7.922\tools\OpenCover.Console.exe";
-    private const string REPORT_GENERATOR  = @"C:\Tools\ReportGenerator.4.8.2\tools\net47\ReportGenerator.exe";
+    private const string OPENCOVER_CONSOLE = @"C:\Tools\OpenCover\4.7.1221\tools\OpenCover.Console.exe";
+    private const string REPORT_GENERATOR  = @"C:\Tools\ReportGenerator\5.0.0\tools\netcoreapp3.1\ReportGenerator.exe";
 
     [Required]
     public string SolutionDir
