@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Name>BuildInfoTarget</Name>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
+        <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.11.0" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
+        <PackageReference Include="Microsoft.NETCore.Targets.NETFramework" Version="4.6.0" />
+        <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
+        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    </ItemGroup>
+
+    <UsingTask TaskName="Microsoft.Build.Tasks.BuildInfoTask" 
+               TaskFactory="RoslynCodeTaskFactory" 
+               AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+        <ParameterGroup>
+            <SolutionDir   ParameterType="System.String" Required="true" />
+            <ProjectDir    ParameterType="System.String" Required="true" />
+            <ProjectName   ParameterType="System.String" Required="true" />
+            <ProjectExt    ParameterType="System.String" Required="true" />
+            <Configuration ParameterType="System.String" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Reference Include="Microsoft.Build.Framework" />
+            <Reference Include="Microsoft.Build.Utilities.Core" />
+            <Reference Include="Microsoft.Build.Tasks.Core" />
+            <Code Type="Class" Source="$(SolutionDir)/targets/src/BuildInfoTask.cs" Language="C#" />
+        </Task>
+    </UsingTask>
+
+    <Target Name="BuildInfoTarget"
+          BeforeTargets="CoreCompile"
+          Condition="(('$(Configuration)' == 'Debug') or ('$(Configuration)' == 'Release'))">
+        <BuildInfoTask SolutionDir="$(SolutionDir)"
+                       ProjectDir="$(ProjectDir)"
+                       ProjectName="$(ProjectName)"
+                       ProjectExt="$(ProjectExt)"
+                       Configuration="$(Configuration)" />
+    </Target>
+</Project>
