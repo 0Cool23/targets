@@ -1,4 +1,4 @@
-### Visual Studio solution targets {#PAGE_SolutionTargets}
+## Visual Studio solution targets {#PAGE_SolutionTargets}
 
 Some build targets require additional tools to be installed. The default
 path for this is the directory `C:\tools`. The tools required are noted
@@ -10,9 +10,9 @@ Then copy the package from the `C:\Users\<user>\.nuget\packages` directory
 and place it into the `C:\tools` directory.
 
 
-#### BuildInfo {#SEC_SolutionTargets_BuildInfo}
+### BuildInfo {#SEC_SolutionTargets_BuildInfo}
 
-#### Coverage {#SEC_SolutionTargets_Coverage}
+### Coverage {#SEC_SolutionTargets_Coverage}
 
 For code coverage target to work in the solution a *MSTest* project named
 *RegressionTests* must be added to the solution. The `RegressionTests.csproj`
@@ -42,6 +42,6 @@ Required targets:
 - `ReportGenerator.4.8.2\tools\net47\ReportGenerator.exe`
 
 
-#### LicenseInfo {#SEC_SolutionTargets_LicenseInfo}
+### LicenseInfo {#SEC_SolutionTargets_LicenseInfo}
 
-#### SolutionInfo {#SEC_SolutionTargets_SolutionInfo}
+### SolutionInfo {#SEC_SolutionTargets_SolutionInfo}
