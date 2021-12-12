@@ -8,8 +8,8 @@
         <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" />
         <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.0.0" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" />
-        <PackageReference Include="Microsoft.NETCore.Targets.NETFramework" Version="4.6.0" />
-        <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+		<PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+		<PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 

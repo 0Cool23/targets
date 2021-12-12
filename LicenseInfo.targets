@@ -8,8 +8,8 @@
         <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" />
         <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.0.0" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" />
-        <PackageReference Include="Microsoft.NETCore.Targets.NETFramework" Version="4.6.0" />
-    </ItemGroup>
+		<PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+	</ItemGroup>
 
     <UsingTask TaskName="Microsoft.Build.Tasks.LicenseInfoTask" 
                TaskFactory="RoslynCodeTaskFactory" 
