@@ -85,6 +85,31 @@ public sealed class SolutionInfoTask
         set;
         }
 
+    [Required]
+    public string Configuration
+        {
+        get;
+        set;
+        }
+
+    [Required]
+    public string TargetPath
+        {
+        get;
+        set;
+        }
+
+    private FileInfo TargetFile
+        {
+        get => new FileInfo(TargetPath);
+        }
+
+    private DirectoryInfo TargetDir
+        {
+        get => TargetFile.Directory;
+        }
+
+
     private string escape_path( string input_string )
         {
         return Regex.Replace(input_string, @"\\", @"\\");
@@ -141,6 +166,9 @@ public sealed class SolutionInfoTask
         line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Project</b></td></tr>"));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>ProjectName:</b></td><td>{0}</td></tr>", ProjectName));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>ProjectDir:</b></td> <td>{0}</td></tr>", escape_path(ProjectDir)));
+        line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Compilation</b></td></tr>"));
+        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Configruation:</b></td><td>{0}</td></tr>", Configuration));
+        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>TargetDir:</b></td><td>{0}</td></tr>", escape_path(TargetDir.FullName)));
         line_list.Add(string.Format(@"    </table>"));
         line_list.Add(string.Format(@"    @}}"));
         line_list.Add(string.Format(@""));
@@ -180,6 +208,13 @@ public sealed class SolutionInfoTask
         line_list.Add(string.Format(@"    public static readonly DirectoryInfo ProjectDir   = new DirectoryInfo(@""{0}"");", ProjectDir));
         line_list.Add(string.Format(@"    #pragma warning restore IDE0090"));
         line_list.Add(string.Format(@"    #pragma warning restore IDE0079"));
+        line_list.Add(string.Format(@"    // Compile information"));        
+        line_list.Add(string.Format(@"    public const string    Configuration       = ""{0}"";", Configuration));
+        line_list.Add(string.Format(@"    #pragma warning disable IDE0079 // unnecessary pragma warning"));
+        line_list.Add(string.Format(@"    #pragma warning disable IDE0090 // simplify new(...)"));
+        line_list.Add(string.Format(@"    public static readonly DirectoryInfo TargetDir   = new DirectoryInfo(@""{0}"");", TargetDir.FullName));
+        line_list.Add(string.Format(@"    #pragma warning restore IDE0090"));
+        line_list.Add(string.Format(@"    #pragma warning restore IDE0079"));
         line_list.Add(string.Format(@"    }}"));
         line_list.Add(string.Format(@"}}"));
 
@@ -212,6 +247,9 @@ public sealed class SolutionInfoTask
         line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Project</b></td></tr>"));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>ProjectName:</b></td><td>{0}</td></tr>", ProjectName));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>ProjectDir:</b></td> <td>{0}</td></tr>", escape_path(ProjectDir)));
+        line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Compilation</b></td></tr>"));
+        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Configruation:</b></td><td>{0}</td></tr>", Configuration));
+        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>TargetDir:</b></td><td>{0}</td></tr>", escape_path(TargetDir.FullName)));
         line_list.Add(string.Format(@"    </table>"));
         line_list.Add(string.Format(@"'   @}}"));
         line_list.Add(string.Format(@"'"));
@@ -241,6 +279,9 @@ public sealed class SolutionInfoTask
         line_list.Add(string.Format(@"    ' Project information"));        
         line_list.Add(string.Format(@"    Public Const ProjectName As String          = ""{0}""", ProjectName));
         line_list.Add(string.Format(@"    Public Shared ProjectDir As DirectoryInfo   = new DirectoryInfo(@""{0}"")", ProjectDir));
+        line_list.Add(string.Format(@"    ' Compile information"));        
+        line_list.Add(string.Format(@"    Public Const Configuration As String        = ""{0}""", Configuration));
+        line_list.Add(string.Format(@"    Public Shared TargetDir As DirectoryInfo   = new DirectoryInfo(@""{0}"")", TargetDir.FullName));
         line_list.Add(string.Format(@"End Module"));
         line_list.Add(string.Format(@"End Namespace"));
 

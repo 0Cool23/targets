@@ -24,6 +24,11 @@ public sealed class BuildInfoTask
         set;
         }
 
+    private DirectoryInfo SolutionPath
+        {
+        get => new DirectoryInfo(SolutionDir);
+        }
+
     [Required]
     public string ProjectDir
         {
@@ -42,6 +47,15 @@ public sealed class BuildInfoTask
         get
             {
             return ProjectName.Replace(" ", "_").Trim();
+            }
+        }
+
+    public bool isGitRepository
+        {
+        get
+            {
+            var git_directory = new DirectoryInfo(Path.Combine(SolutionDir, ".git"));
+            return git_directory.Exists;
             }
         }
 
@@ -397,12 +411,15 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Version</b></td></tr>"));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Assembly:</b></td><td>{0}</td></tr>", asm_version.ToString()));
         line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>API:</b></td>     <td>{0}</td></tr>", api_version.ToString()));
-        line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Git Repository</b></td></tr>"));
-        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>BranchName:</b></td><td>{0}</td></tr>", BranchName));
-        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>CommitDate:</b></td><td>{0}</td></tr>", CommitDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>CommitHash:</b></td><td>{0}</td></tr>", CommitHash));
-        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Clean:</b></td>    <td>{0}</td></tr>", IsClean.ToString().ToLower()));
-        line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Synced:</b></td>   <td>{0}</td></tr>", InSync.ToString().ToLower()));
+        if( isGitRepository )
+            {
+            line_list.Add(string.Format(@"    <tr><td colspan='3'><b>Git Repository</b></td></tr>"));
+            line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>BranchName:</b></td><td>{0}</td></tr>", BranchName));
+            line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>CommitDate:</b></td><td>{0}</td></tr>", CommitDate.ToString(DATE_FORMAT)));
+            line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>CommitHash:</b></td><td>{0}</td></tr>", CommitHash));
+            line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Clean:</b></td>    <td>{0}</td></tr>", IsClean.ToString().ToLower()));
+            line_list.Add(string.Format(@"      <tr><td>&nbsp;</td><td><b>Synced:</b></td>   <td>{0}</td></tr>", InSync.ToString().ToLower()));
+            }
         line_list.Add(string.Format(@"    </table>"));
         line_list.Add(string.Format(@"    @}}"));
         line_list.Add(string.Format(@""));
@@ -434,12 +451,15 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"    public const string    BuildHost           = ""{0}"";", BuildHost));
         line_list.Add(string.Format(@"    public const string    BuildType           = ""{0}"";", Configuration));
         line_list.Add(string.Format(@"    public static readonly DateTime BuildDate  = DateTime.Parse(""{0}"");", BuildDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"    // Git repository information"));        
-        line_list.Add(string.Format(@"    public const string    BranchName          = ""{0}"";", BranchName));
-        line_list.Add(string.Format(@"    public const string    CommitHash          = ""{0}"";", CommitHash));
-        line_list.Add(string.Format(@"    public static readonly DateTime CommitDate = DateTime.Parse(""{0}"");", CommitDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"    public const bool      IsClean             = {0};", IsClean.ToString().ToLower()));
-        line_list.Add(string.Format(@"    public const bool      InSync              = {0};", InSync.ToString().ToLower()));
+        if( isGitRepository )
+            {
+            line_list.Add(string.Format(@"    // Git repository information"));        
+            line_list.Add(string.Format(@"    public const string    BranchName          = ""{0}"";", BranchName));
+            line_list.Add(string.Format(@"    public const string    CommitHash          = ""{0}"";", CommitHash));
+            line_list.Add(string.Format(@"    public static readonly DateTime CommitDate = DateTime.Parse(""{0}"");", CommitDate.ToString(DATE_FORMAT)));
+            line_list.Add(string.Format(@"    public const bool      IsClean             = {0};", IsClean.ToString().ToLower()));
+            line_list.Add(string.Format(@"    public const bool      InSync              = {0};", InSync.ToString().ToLower()));
+            }
         line_list.Add(string.Format(@"    // Version information"));
         line_list.Add(string.Format(@"    #pragma warning disable IDE0079 // unnecessary pragma warning"));
         line_list.Add(string.Format(@"    #pragma warning disable IDE0090 // simplify new(...)"));
@@ -483,12 +503,15 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"'   <tr><td colspan='3'><b>Version</b></td></tr>"));
         line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>Assembly:</b></td><td>{0}</td></tr>", asm_version.ToString()));
         line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>API:</b></td>     <td>{0}</td></tr>", api_version.ToString()));
-        line_list.Add(string.Format(@"'   <tr><td colspan='3'><b>Git Repository</b></td></tr>"));
-        line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>BranchName:</b></td><td>{0}</td></tr>", BranchName));
-        line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>CommitDate:</b></td><td>{0}</td></tr>", CommitDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>CommitHash:</b></td><td>{0}</td></tr>", CommitHash));
-        line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>Clean:</b></td>    <td>{0}</td></tr>", IsClean.ToString().ToLower()));
-        line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>Synced:</b></td>   <td>{0}</td></tr>", InSync.ToString().ToLower()));
+        if( isGitRepository )
+            {
+            line_list.Add(string.Format(@"'   <tr><td colspan='3'><b>Git Repository</b></td></tr>"));
+            line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>BranchName:</b></td><td>{0}</td></tr>", BranchName));
+            line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>CommitDate:</b></td><td>{0}</td></tr>", CommitDate.ToString(DATE_FORMAT)));
+            line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>CommitHash:</b></td><td>{0}</td></tr>", CommitHash));
+            line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>Clean:</b></td>    <td>{0}</td></tr>", IsClean.ToString().ToLower()));
+            line_list.Add(string.Format(@"'     <tr><td>&nbsp;</td><td><b>Synced:</b></td>   <td>{0}</td></tr>", InSync.ToString().ToLower()));
+            }
         line_list.Add(string.Format(@"'   </table>"));
         line_list.Add(string.Format(@"'   @}}"));
         line_list.Add(string.Format(@"'"));
@@ -517,12 +540,15 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"    Public Const BuildHost As String   = ""{0}""", BuildHost));
         line_list.Add(string.Format(@"    Public Const BuildType As String   = ""{0}""", Configuration));
         line_list.Add(string.Format(@"    public       BuildDate As Date     = DateTime.Parse(""{0}"")", BuildDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"    ' Git repository information"));        
-        line_list.Add(string.Format(@"    Public Const BranchName As String  = ""{0}""", BranchName));
-        line_list.Add(string.Format(@"    Public Const CommitHash As String  = ""{0}""", CommitHash));
-        line_list.Add(string.Format(@"    Public       CommitDate As Date    = DateTime.Parse(""{0}"")", CommitDate.ToString(DATE_FORMAT)));
-        line_list.Add(string.Format(@"    Public Const IsClean As Boolean    = {0}", IsClean.ToString()));
-        line_list.Add(string.Format(@"    Public Const InSync As Boolean     = {0}", InSync.ToString()));
+        if( isGitRepository )
+            {
+            line_list.Add(string.Format(@"    ' Git repository information"));        
+            line_list.Add(string.Format(@"    Public Const BranchName As String  = ""{0}""", BranchName));
+            line_list.Add(string.Format(@"    Public Const CommitHash As String  = ""{0}""", CommitHash));
+            line_list.Add(string.Format(@"    Public       CommitDate As Date    = DateTime.Parse(""{0}"")", CommitDate.ToString(DATE_FORMAT)));
+            line_list.Add(string.Format(@"    Public Const IsClean As Boolean    = {0}", IsClean.ToString()));
+            line_list.Add(string.Format(@"    Public Const InSync As Boolean     = {0}", InSync.ToString()));
+            }
         line_list.Add(string.Format(@"    ' Version information"));
         line_list.Add(string.Format(@"    Public       Version  AsmVersion   = new Version({0}, {1}, {2}, {3});", asm_version.Major, asm_version.Minor, asm_version.Build, asm_version.Revision));
         line_list.Add(string.Format(@"    Public       Version  ApiVersion   = new Version({0}, {1}, {2}, {3});", api_version.Major, api_version.Minor, api_version.Build, api_version.Revision));

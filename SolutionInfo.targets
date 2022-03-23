@@ -22,6 +22,8 @@
             <ProjectDir    ParameterType="System.String" Required="true" />
             <ProjectName   ParameterType="System.String" Required="true" />
             <ProjectExt    ParameterType="System.String" Required="true" />
+            <Configuration ParameterType="System.String" Required="true" />
+            <TargetPath    ParameterType="System.String" Required="true" />
         </ParameterGroup>
         <Task>
             <Reference Include="Microsoft.Build.Framework" />
@@ -38,6 +40,8 @@
                           SolutionName="$(SolutionName)"
                           ProjectDir="$(ProjectDir)"
                           ProjectName="$(ProjectName)"
-                          ProjectExt="$(ProjectExt)" />
+                          ProjectExt="$(ProjectExt)"
+                          Configuration="$(Configuration)"
+                          TargetPath="$(TargetPath)" />
     </Target>
 </Project>
