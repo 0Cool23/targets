@@ -33,7 +33,7 @@
     </UsingTask>
 
     <Target Name="CoverageTarget"
-          AfterTargets="Build"
+          AfterTargets="AfterBuild"
           Condition="('$(Configuration)' == 'Coverage')">
         <CoverageTask SolutionDir="$(SolutionDir)"
                       ProjectDir="$(ProjectDir)"
