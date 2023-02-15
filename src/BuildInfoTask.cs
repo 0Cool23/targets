@@ -1,5 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -434,6 +435,10 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"*/"));
         line_list.Add(string.Format(@""));
         line_list.Add(string.Format(@"using System;"));
+        line_list.Add(string.Format(@"using System.Reflection;"));
+        line_list.Add(string.Format(@""));
+        line_list.Add(string.Format(@"[assembly:AssemblyVersionAttribute(""{0}.{1}.{2}.{3}"")]", asm_version.Major, asm_version.Minor, asm_version.Build, asm_version.Revision));
+        line_list.Add(string.Format(@"[assembly:AssemblyFileVersionAttribute(""{0}.{1}.{2}.{3}"")]", asm_version.Major, asm_version.Minor, asm_version.Build, asm_version.Revision));
         line_list.Add(string.Format(@""));
         line_list.Add(string.Format(@"namespace {0}.Generated", ProjectNameClean));
         line_list.Add(string.Format(@"{{"));
@@ -525,6 +530,10 @@ public sealed class BuildInfoTask
         line_list.Add(string.Format(@"'"));
         line_list.Add(string.Format(@""));
         line_list.Add(string.Format(@"Imports System"));
+        line_list.Add(string.Format(@"Imports System.Reflection"));
+        line_list.Add(string.Format(@""));
+        line_list.Add(string.Format(@"<Assembly:AssemblyVersionAttribute(""{0}.{1}.{2}.{3}"")>", asm_version.Major, asm_version.Minor, asm_version.Build, asm_version.Revision));
+        line_list.Add(string.Format(@"<Assembly:AssemblyFileVersionAttribute(""{0}.{1}.{2}.{3}"")>", asm_version.Major, asm_version.Minor, asm_version.Build, asm_version.Revision));
         line_list.Add(string.Format(@""));
         line_list.Add(string.Format(@"Namespace {0}.Generated", ProjectNameClean));
         line_list.Add(string.Format(@""));

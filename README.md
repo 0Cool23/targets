@@ -15,14 +15,33 @@ in the target section.
 
 ### BuildInfo {#SEC_SolutionTargets_BuildInfo}
 
+The build info target is activated by editing the project *\*.vbproj* or
+*\*.csproj* file. The *BuildInfo.targets* must be added to the project
+and the *Version* tag removed from the *PropertyGroup* to avoid a
+duplicate version info conflict.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(SolutionDir)/targets/BuildInfo.targets" />
+
+  <PropertyGroup>
+  ...
+     <!--<Version>1.0.0.0</Version>-->
+     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  ...
+  </PropertyGroup>
+
+```
+
 ### Coverage {#SEC_SolutionTargets_Coverage}
 
 For code coverage target to work in the solution a *MSTest* project named
 *RegressionTests* must be added to the solution. The `RegressionTests.csproj`
 file must then be edited by adding the coverage target file to the project
-configuratrion file.
+configuration file.
 
-```
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="$(SolutionDir)/targets/Coverage.targets" />
@@ -42,9 +61,9 @@ configurations must match the table.
 | Regression Tests       | Debug     | Release   | Coverage  |
 
 Required targets:
+
 - `OpenCover.4.7.922\tools\OpenCover.Console.exe`
 - `ReportGenerator.4.8.2\tools\net47\ReportGenerator.exe`
-
 
 ### LicenseInfo {#SEC_SolutionTargets_LicenseInfo}
 
@@ -54,15 +73,15 @@ build target. There is only one license file allowed for each project.
 
 A markdown license file has two parts. A short license and a long license
 terms section. These are separated by the first two `### ...` markdown
-header lines. In the followong example the line `### libId3Buffer Library ...`
+header lines. In the following example the line `### libId3Buffer Library ...`
 marks the start of the short license term section and uses the following text
 as license text. Up to the next line starting with `### ...` is found. The
 rest of the text is then used as long license term section.
 
-```
+```text
 ### libId3Buffer Library (LGPL v2.1) {#LIBRARY_LIBID3BUFFER_LGPL_2_1}
 
-liId3Buffer - Library to analyse and modify music files header information.
+liId3Buffer - Library to analyze and modify music files header information.
 
     Copyright (C) 2021
     - Goetz Olbrischewski
@@ -76,10 +95,10 @@ Version 2.1, February 1999
     Copyright (C) 1991, ...
 ```
 
-Finally the lincense build target must be activated by adding the LincenseInfo
-target file to the project configuratrion file.
+Finally the license build target must be activated by adding the LicenseInfo
+target file to the project configuration file.
 
-```
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="$(SolutionDir)/targets/LicenseInfo.targets" />
@@ -96,7 +115,7 @@ readonly string property `LongText`.
 > **Note:**
 >
 > Some example license markdown files can be copied from
-> [Github](https://github.com/0Cool23/doxygen)'s `doxygen` 
+> [Github](https://github.com/0Cool23/doxygen)'s `doxygen`
 > repository `licenses` subfolder.
 
 ### SolutionInfo {#SEC_SolutionTargets_SolutionInfo}
